@@ -60,12 +60,18 @@ function generateId(max) {
 }
 
 app.post('/api/persons', (req, res) => {
-  console.log(req.body)
   const body = req.body;
 
   if (!body.name || !body.number) {
-    return res.status(400).json({ 
-      error: 'content missing' 
+    return res.status(400).json({
+      error: 'content missing'
+    });
+  }
+
+  const existingPerson = persons.find(p => p.name === req.body.name);
+  if (existingPerson) {
+    return res.status(400).json({
+      error: 'name must be unique'
     });
   }
 
